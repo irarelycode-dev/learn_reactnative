@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Animated, PanResponder } from "react-native";
+import { View, Animated, PanResponder, StyleSheet } from "react-native";
 
 //constants
 import { SCREEN_WIDTH, SWIPE_THRESHOLD } from "../constants/constants";
@@ -73,25 +73,35 @@ class Deck extends Component {
   }
 
   renderCards() {
-    return this.props.data.map((item, index) => {
-      if (index < this.state.index) {
-        return null;
-      }
+    if (this.state.index >= this.props.data.length) {
+      return this.props.renderNoMoreCard();
+    }
 
-      if (index === this.state.index) {
+    return this.props.data
+      .map((item, index) => {
+        if (index < this.state.index) {
+          return null;
+        }
+
+        if (index === this.state.index) {
+          return (
+            <Animated.View
+              style={[this.getCardStyle(), styles.cardStyle]}
+              {...this.state.panResponder.panHandlers}
+              key={0}
+            >
+              {this.props.renderCard(item)}
+            </Animated.View>
+          );
+        }
+
         return (
-          <Animated.View
-            style={this.getCardStyle()}
-            {...this.state.panResponder.panHandlers}
-            key={0}
-          >
+          <View key={item.id} style={styles.cardStyle}>
             {this.props.renderCard(item)}
-          </Animated.View>
+          </View>
         );
-      }
-
-      return this.props.renderCard(item);
-    });
+      })
+      .reverse();
   }
 
   render() {
@@ -100,3 +110,10 @@ class Deck extends Component {
 }
 
 export default Deck;
+
+const styles = StyleSheet.create({
+  cardStyle: {
+    position: "absolute",
+    width: SCREEN_WIDTH,
+  },
+});
