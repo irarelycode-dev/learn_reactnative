@@ -1,9 +1,20 @@
 import React, { Component } from "react";
-import { View, Animated, Text } from "react-native";
+import { View, Animated, Text, PanResponder } from "react-native";
 
 class Deck extends Component {
-  componentDidMount() {
-    console.log("component has been mounted");
+  constructor(props) {
+    super(props);
+
+    const position = new Animated.ValueXY();
+
+    const panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, gesture) => {
+        position.setValue({ x: gesture.dx, y: gesture.dy });
+      },
+      onPanResponderRelease: () => {},
+    });
+    this.state = { panResponder, position };
   }
 
   renderCards() {
@@ -11,7 +22,14 @@ class Deck extends Component {
   }
 
   render() {
-    return <View>{this.renderCards()}</View>;
+    return (
+      <Animated.View
+        style={this.state.position.getLayout()}
+        {...this.state.panResponder.panHandlers}
+      >
+        {this.renderCards()}
+      </Animated.View>
+    );
   }
 }
 

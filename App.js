@@ -11,7 +11,6 @@ import Deck from "./src/Deck";
 
 export default function App() {
   const renderCard = (item) => {
-    console.log(item);
     return (
       <Card key={item.id}>
         <Card.Title>{item.text}</Card.Title>
