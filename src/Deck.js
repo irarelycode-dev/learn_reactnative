@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { View, Animated, PanResponder, StyleSheet } from "react-native";
+import {
+  View,
+  Animated,
+  PanResponder,
+  StyleSheet,
+  UIManager,
+  LayoutAnimation,
+} from "react-native";
 
 //constants
 import { SCREEN_WIDTH, SWIPE_THRESHOLD } from "../constants/constants";
@@ -31,6 +38,18 @@ class Deck extends Component {
       },
     });
     this.state = { panResponder, position, index: 0 };
+  }
+
+  componentWillUpdate() {
+    UIManager.setLayoutAnimationEnabledExperimental &&
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+    LayoutAnimation.spring();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data !== this.props.data) {
+      this.setState({ index: 0 });
+    }
   }
 
   forceSwipe(direction) {
@@ -96,9 +115,12 @@ class Deck extends Component {
         }
 
         return (
-          <View key={item.id} style={styles.cardStyle}>
+          <Animated.View
+            key={item.id}
+            style={[styles.cardStyle, { top: 10 * (index - this.state.index) }]}
+          >
             {this.props.renderCard(item)}
-          </View>
+          </Animated.View>
         );
       })
       .reverse();
