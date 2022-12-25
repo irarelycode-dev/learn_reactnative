@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Animated, PanResponder } from "react-native";
 
 //constants
-import { SCREEN_WIDTH } from "../constants/constants";
+import { SCREEN_WIDTH, SWIPE_THRESHOLD } from "../constants/constants";
 
 class Deck extends Component {
   constructor(props) {
@@ -15,11 +15,25 @@ class Deck extends Component {
       onPanResponderMove: (event, gesture) => {
         position.setValue({ x: gesture.dx, y: gesture.dy });
       },
-      onPanResponderRelease: () => {
-        this.resetPosition();
+      onPanResponderRelease: (event, gesture) => {
+        if (gesture.dx > SWIPE_THRESHOLD) {
+          this.forceSwipe("right");
+        } else if (gesture.dx < -SWIPE_THRESHOLD) {
+          this.forceSwipe("left");
+        } else {
+          this.resetPosition();
+        }
       },
     });
     this.state = { panResponder, position };
+  }
+
+  forceSwipe(direction) {
+    Animated.timing(this.state.position, {
+      toValue: { x: direction === "left" ? -SCREEN_WIDTH : SCREEN_WIDTH, y: 0 },
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
   }
 
   resetPosition() {
