@@ -5,6 +5,11 @@ import { View, Animated, PanResponder } from "react-native";
 import { SCREEN_WIDTH, SWIPE_THRESHOLD } from "../constants/constants";
 
 class Deck extends Component {
+  static defaultProps = {
+    onSwipeRight: () => {},
+    onSwipeLeft: () => {},
+  };
+
   constructor(props) {
     super(props);
 
@@ -25,7 +30,7 @@ class Deck extends Component {
         }
       },
     });
-    this.state = { panResponder, position };
+    this.state = { panResponder, position, index: 0 };
   }
 
   forceSwipe(direction) {
@@ -33,7 +38,17 @@ class Deck extends Component {
       toValue: { x: direction === "left" ? -SCREEN_WIDTH : SCREEN_WIDTH, y: 0 },
       duration: 250,
       useNativeDriver: false,
-    }).start();
+    }).start(() => {
+      this.onSwipeComplete(direction);
+    });
+  }
+
+  onSwipeComplete(direction) {
+    const { onSwipeLeft, onSwipeRight, data } = this.props;
+    const item = data[this.state.index];
+    direction === "left" ? onSwipeLeft(item) : onSwipeRight(item);
+    this.state.position.setValue({ x: 0, y: 0 });
+    this.setState({ index: this.state.index + 1 });
   }
 
   resetPosition() {
@@ -59,7 +74,11 @@ class Deck extends Component {
 
   renderCards() {
     return this.props.data.map((item, index) => {
-      if (index == 0) {
+      if (index < this.state.index) {
+        return null;
+      }
+
+      if (index === this.state.index) {
         return (
           <Animated.View
             style={this.getCardStyle()}
