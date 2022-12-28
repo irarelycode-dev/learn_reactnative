@@ -23,9 +23,12 @@ module.exports = function (req, res) {
           if (err) {
             return res.status(422).send(err);
           }
-          admin.database().ref("users/" + phone).update({ code: code }, () => {
-            return res.status(200).send({ success: true });
-          });
+          admin
+            .database()
+            .ref("users/" + phone)
+            .update({ code: code, codeValid: true }, () => {
+              return res.status(200).send({ success: true });
+            });
         }
       );
     })
