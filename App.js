@@ -1,65 +1,24 @@
-import Constants from "expo-constants";
-import { StyleSheet, View, Text } from "react-native";
-import { Card, Button, Image } from "react-native-elements";
-
-//constants and helper functions
-import { DATA } from "./constants/cards";
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
 
 //components
-import Ball from "./src/Ball";
-import Deck from "./src/Deck";
+import Signup from "./src/components/Signup";
 
-export default function App() {
-  const renderCard = (item) => {
-    return (
-      <Card key={item.id}>
-        <Card.Title>{item.text}</Card.Title>
-        <Card.Image
-          source={{ uri: item.uri }}
-          resizeMode="cover"
-          style={styles.image}
-        />
-        <Text style={{ marginBottom: 15 }}>I can customize even more...</Text>
-
-        <Button
-          icon={{ name: "code" }}
-          backgroundColor="#03A9F4"
-          title="View"
-        />
-      </Card>
-    );
-  };
-
-  const renderNoMoreCard = () => {
-    return (
-      <Card>
-        <Card.Title>No more cards!</Card.Title>
-        <Text style={{ marginBottom: 15 }}>No more content!</Text>
-        <Button
-          icon={{ name: "code" }}
-          backgroundColor="#03A9F4"
-          title="View"
-        />
-      </Card>
-    );
-  };
-
+const App = () => {
   return (
     <View style={styles.container}>
-      {/* <Ball /> */}
-      <Deck
-        data={DATA}
-        renderCard={renderCard}
-        renderNoMoreCard={renderNoMoreCard}
-      />
+      <Signup />
+      {/* <Text>Chennai super kings</Text> */}
     </View>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    marginTop: Constants.statusBarHeight,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
