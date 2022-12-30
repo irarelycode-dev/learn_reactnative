@@ -3,6 +3,7 @@ const twilio = require("./twilio");
 const { phoneNumber } = require("./twilio_credentials");
 
 module.exports = function (req, res) {
+  res.set("Access-Control-Allow-Origin", "*");
   if (!req.body.phone) {
     return res.status(422).send({ error: "You must provide a phone number" });
   }

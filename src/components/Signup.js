@@ -13,9 +13,21 @@ class Signup extends React.Component {
     this.setState({ number: value });
   };
 
-  handleSubmit() {
-    axios.post("", { phone: this.state.phone });
-  }
+  handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        "  https://f4a1-96-20-226-228.ngrok.io/one-time-password-8a4e1/us-central1/createUser",
+        { phone: this.state.phone }
+      );
+      console.log(">>>response", response);
+      const response2 = await axios.post(
+        "  https://f4a1-96-20-226-228.ngrok.io/one-time-password-8a4e1/us-central1/requestOneTimePassword",
+        { phone: this.state.phone }
+      );
+    } catch (error) {
+      console.log("otp error");
+    }
+  };
 
   render() {
     return (

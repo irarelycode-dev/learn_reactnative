@@ -2,6 +2,8 @@ const admin = require("firebase-admin");
 
 module.exports = function (req, res) {
   //verify if the user provides a phone number
+  res.set("Access-Control-Allow-Origin", "*");
+  console.log(">>>>req", req);
   if (!req.body.phone) {
     res.status(422).send({ error: "Bad input" });
   }
