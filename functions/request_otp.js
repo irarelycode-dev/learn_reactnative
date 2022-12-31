@@ -1,13 +1,14 @@
 const admin = require("firebase-admin");
 const twilio = require("./twilio");
-const { phoneNumber } = require("./twilio_credentials");
+const twilioAccount = require("./twilio_credentials");
 
 module.exports = function (req, res) {
   res.set("Access-Control-Allow-Origin", "*");
-  if (!req.body.phone) {
+  const phoneNumber = req.body.phone;
+  if (!phoneNumber) {
     return res.status(422).send({ error: "You must provide a phone number" });
   }
-  const phone = String(req.body.phone).replace(/[^\d]/g, "");
+  const phone = String(phoneNumber).replace(/[^\d]/g, "");
 
   admin
     .auth()
@@ -18,7 +19,7 @@ module.exports = function (req, res) {
         {
           body: "Your code is " + code,
           to: phone,
-          from: phoneNumber,
+          from: twilioAccount.twilioPhoneNumber,
         },
         (err) => {
           if (err) {

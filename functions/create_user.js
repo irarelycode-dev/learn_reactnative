@@ -1,13 +1,14 @@
 const admin = require("firebase-admin");
 
-module.exports = function (req, res) {
+module.exports = (req, res) => {
   //verify if the user provides a phone number
-  if (!req.body.phone) {
+  const phoneNumber = req.body.phone;
+  if (!phoneNumber) {
     return res.status(422).send({ error: "Bad input" });
   }
 
   //format the phone number to remove the dashes
-  const phone = String(req.body.phone).replace(/[^\d]/g, "");
+  const phone = String(phoneNumber).replace(/[^\d]/g, "");
 
   //create a new user account using that phone number
   admin

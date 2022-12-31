@@ -1,6 +1,7 @@
 const admin = require("firebase-admin");
 const functions = require("firebase-functions");
 const express = require("express");
+const bodyParser = require("body-parser");
 const serviceAccount = require("./one-time-password-8a4e1-firebase-adminsdk-jtqnl-2c160cac20.json");
 
 //routers
@@ -8,7 +9,19 @@ const router = require("./router");
 
 const app = express();
 
-app.use(express.json());
+app.use(
+  bodyParser.json({
+    limit: "50mb",
+    extended: true,
+  })
+);
+
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+  })
+);
 
 // // Create and deploy your first functions
 // // https://firebase.google.com/docs/functions/get-started

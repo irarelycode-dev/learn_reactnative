@@ -16,16 +16,16 @@ class Signup extends React.Component {
   handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "  https://f4a1-96-20-226-228.ngrok.io/one-time-password-8a4e1/us-central1/createUser",
-        { phone: this.state.phone }
+        " https://6db9-96-20-226-228.ngrok.io/one-time-password-8a4e1/us-central1/router/createUser",
+        { phone: this.state.number }
       );
-      console.log(">>>response", response);
+
       const response2 = await axios.post(
-        "  https://f4a1-96-20-226-228.ngrok.io/one-time-password-8a4e1/us-central1/requestOneTimePassword",
-        { phone: this.state.phone }
+        " https://6db9-96-20-226-228.ngrok.io/one-time-password-8a4e1/us-central1/router/requestOTP",
+        { phone: this.state.number }
       );
     } catch (error) {
-      console.log("otp error");
+      console.log("error", error.response.data);
     }
   };
 

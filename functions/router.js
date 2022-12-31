@@ -6,8 +6,11 @@ const createUser = require("./create_user");
 const requestOTP = require("./request_otp");
 const verifyOneTimePassword = require("./verify_otp");
 
-router.post("/createUser", createUser);
-router.post("/requestOTP", requestOTP);
-router.post("/verifyOTP", verifyOneTimePassword);
+//utilities
+const customParser = require("./custom-parser");
+
+router.post("/createUser", customParser, createUser);
+router.post("/requestOTP", customParser, requestOTP);
+router.post("/verifyOTP", customParser, verifyOneTimePassword);
 
 module.exports = router;
