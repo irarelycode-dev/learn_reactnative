@@ -2,6 +2,8 @@ const admin = require("firebase-admin");
 const twilio = require("./twilio");
 const twilioAccount = require("./twilio_credentials");
 
+const { getDatabase, ref, set } = require("firebase/database");
+
 module.exports = function (req, res) {
   res.set("Access-Control-Allow-Origin", "*");
   const phoneNumber = req.body.phone;
@@ -25,12 +27,20 @@ module.exports = function (req, res) {
           if (err) {
             return res.status(422).send(err);
           }
-          admin
-            .database()
-            .ref("users/" + phone)
-            .update({ code: code, codeValid: true }, () => {
-              return res.status(200).send({ success: true });
-            });
+          // admin
+          //   .database()
+          //   .ref("users/" + phone)
+          //   .update({ code: code, codeValid: true }, () => {
+          //     return res.status(200).send({ success: true });
+          //   })
+          //   .then((record) => {
+          //     console.log("record", record);
+          //   })
+          //   .catch((error) => {
+          //     console.log("otp error", error);
+          //   });
+          // firebase
+          //   .database().
         }
       );
     })

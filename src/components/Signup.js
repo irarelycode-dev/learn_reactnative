@@ -3,6 +3,8 @@ import React from "react";
 import { Input, Button } from "react-native-elements";
 import axios from "axios";
 
+import { FIREBASE_FUNCTIONS_BASE_URL } from "../../constants/constants";
+
 class Signup extends React.Component {
   constructor(props) {
     super(props);
@@ -16,12 +18,12 @@ class Signup extends React.Component {
   handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "https://b536-96-20-226-228.ngrok.io/one-time-password-8a4e1/us-central1/router/createUser",
+        `${FIREBASE_FUNCTIONS_BASE_URL}/one-time-password-8a4e1/us-central1/router/createUser`,
         { phone: this.state.number }
       );
 
       const response2 = await axios.post(
-        "https://b536-96-20-226-228.ngrok.io/one-time-password-8a4e1/us-central1/router/requestOTP",
+        `${FIREBASE_FUNCTIONS_BASE_URL}/one-time-password-8a4e1/us-central1/router/requestOTP`,
         { phone: this.state.number }
       );
     } catch (error) {

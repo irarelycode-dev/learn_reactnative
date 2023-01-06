@@ -21,20 +21,11 @@ module.exports = function (req, res) {
         .on("value", (snapshot) => {
           const user = snapshot.val();
           console.log("user", user);
-          if (user.code != code || !user.codeValid) {
-            return res.status(422).send({ error: "Code not valid" });
-          }
           admin
-            .database()
-            .ref("users/" + phone)
-            .update({ codeValid: false })
-            .then(() => {
-              admin
-                .auth()
-                .createCustomToken(phone)
-                .then((token) => {
-                  return res.send({ token });
-                });
+            .auth()
+            .createCustomToken(phone)
+            .then((token) => {
+              return res.send({ token });
             });
         });
     })

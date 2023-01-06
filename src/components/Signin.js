@@ -3,6 +3,8 @@ import React from "react";
 import { Input, Button, Text } from "react-native-elements";
 import axios from "axios";
 
+import { FIREBASE_FUNCTIONS_BASE_URL } from "../../constants/constants";
+
 class Signin extends React.Component {
   constructor(props) {
     super(props);
@@ -20,7 +22,7 @@ class Signin extends React.Component {
   handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "https://b536-96-20-226-228.ngrok.io/one-time-password-8a4e1/us-central1/router/verifyOTP",
+        `${FIREBASE_FUNCTIONS_BASE_URL}/one-time-password-8a4e1/us-central1/router/verifyOTP`,
         { phone: this.state.number, code: this.state.code }
       );
       console.log("verifyOTP response", response);
