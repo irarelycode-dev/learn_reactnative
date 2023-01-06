@@ -8,12 +8,8 @@ module.exports = function (req, res) {
     return res.status(422).send({ error: "Phone and code must be provided" });
   }
 
-  console.log("flag2");
-
   const phone = String(req.body.phone).replace(/[^\d]/g, "");
   const code = parseInt(req.body.code);
-
-  console.log("flag3 ", code);
 
   admin
     .auth()
